@@ -73,47 +73,7 @@ class Automaton(object):
                 del self.__delta[L]
         temp = None
         toErase = None
-
-    # '''
-    # ------------- Para PDI ---------------------------
-
-    def meanDistance(self, dist):
-        L = []
-        for s in self.__states:
-            L.append(s)
-        d = 0.0
-        k = 0
-        for i in range(len(L)-1):
-            j = i + 1
-            while j < len(L):
-                d = d + self.__distance(L[i], L[j], dist)
-                k = k + 1
-                j = j + 1
-        return d/k
-
-
-    def __merge(self, s, q):
-        self.__F[s] = self.__F[s] + self.__F[q]
-        Fq = self.__getFather(s)
-        self.__delta[Fq] = s
-            
-        
-    def reductionForImage(self, alpha, dist):
-        reds = set([self.__s0])
-        blues = self.__getBlues(reds)
-        while len(blues) > 0:
-            print('Tamahos red e blues:', len(reds), len(blues))
-            blue = choice(list(blues))
-            color = True
-            for red in reds:
-                if self.__distance(red, blue, dist) < alpha:
-                    self.__merge(red, blue)
-                    self.__otimize()
-                    color = False
-                    break
-            if color == True:
-                reds.add(blue)
-            blues = self.__getBlues(reds)
+    
 
     # '''
     # --------------------------------------------------
