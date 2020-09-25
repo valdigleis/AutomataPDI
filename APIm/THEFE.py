@@ -1,16 +1,3 @@
-def normalizeInInterval(vector):
-    m = max(vector)
-    n = min(vector)
-    d = m - n
-    L = list()
-    for x in vector:
-        if d > 0:
-            k = (x - n)/d
-            L.append(k)
-        else:
-            L.append(0.0)
-    return L
-
 class THFE(object):
     
     def __init__(self, values):
@@ -62,6 +49,12 @@ class THFE(object):
 
     def getDegrees(self):
         return self.__degrees
+
+    def getSum(self):
+        S = 0.0
+        for x in self.__degrees:
+            S = S + x
+        return S
     
     def __getListDegrees(self):
         """Metodo que retorna o conjunto de valores de pertinencia do elemento fuzzy hesistante tipico."""

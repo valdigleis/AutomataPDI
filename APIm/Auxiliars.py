@@ -148,4 +148,12 @@ def createAutomataAndXi(figure):
 
     # Cria o automato
     M = aut(states, alphabet, delta, s0, fStates)
+    # Elimina os xi inuteis
+    toDel = set()
+    for L,V in xi.items():
+        l, c = V.shape
+        if l * c > 1:
+            toDel.add(L)
+    for L in toDel:
+        del xi[L]
     return M, xi

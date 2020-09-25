@@ -2,7 +2,9 @@
 #!/usr/bin/python3
 
 from random import choice
+from THEFE import THFE
 from THEFE import ZERO
+from THEFE import ONE
 
 class Automaton(object):
 
@@ -13,15 +15,7 @@ class Automaton(object):
         self.__s0 = s0
         self.__F = F
 
-    def compute(self, word):
-        s = self.__s0
-        for c in word:
-            L = s + ',' + c
-            if L in self.__delta:
-                s = self.__delta[L]
-        return s
-
-    def valuedCompute(self, word):
+    def computeValuation(self, word):
         s = self.__s0
         for c in word:
             L = s + ',' + c
@@ -30,6 +24,38 @@ class Automaton(object):
             else:
                 return ZERO
         return self.__F[s]
+
+    def compute(self, word):
+        s = self.__s0
+        for c in word:
+            L = s + ',' + c
+            if L in self.__delta:
+                s = self.__delta[L]
+        return s
+
+    def __getAllPrefixes(self, word):
+        prefixes = list()
+        prefixes.append(word)
+        n = 1
+        while n < len(word):
+            prefixes.append(word[:-n])
+        return prefixes
+
+    def prefixesComputationWithMaxCom(self, word):
+        words = self.__getAllPrefixes(word)
+        result = ZERO
+        for word in words:
+            s = self.compute(word)
+            result = result + self.__F[s]
+        return result
+
+    def prefixesComputationWithMinCom(self, word):
+        words = self.__getAllPrefixes(word)
+        result = ONE
+        for word in words:
+            s = self.compute(word)
+            result = result * self.__F[s]
+        return result
 
     def __getFather(self, q):
         for K, V in self.__delta.items():
