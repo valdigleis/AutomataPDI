@@ -13,8 +13,15 @@ class Automaton(object):
         self.__s0 = s0
         self.__F = F
 
-
     def compute(self, word):
+        s = self.__s0
+        for c in word:
+            L = s + ',' + c
+            if L in self.__delta:
+                s = self.__delta[L]
+        return s
+
+    def valuedCompute(self, word):
         s = self.__s0
         for c in word:
             L = s + ',' + c
@@ -75,7 +82,7 @@ class Automaton(object):
         toErase = None
     
 
-    # '''
+    # --------------------------------------------------
     # --------------------------------------------------
             
     def __len__(self):
@@ -89,6 +96,6 @@ class Automaton(object):
             D = D + ('d(' + L + ')=' + V) + '\n'
         F = ''
         for L, V in self.__F.items():
-            F = F + ('d(' + L + ')=' + V) + '\n'
+            F = F + ('d(' + L + ')=' + str(V)) + '\n'
         return S + A + D + F
         

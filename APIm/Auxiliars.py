@@ -1,13 +1,42 @@
 #! -*- utf-8 -*-
 #!/usr/bin/python3
 
+import string
+import itertools
 import skimage
 import numpy as np
 
+from math import log2
 from THEFE import THFE as thfe
 from THEFE import ONE
 from THEFE import ZERO
 from Automaton import Automaton as aut
+
+
+def getEnumPixel(n):
+    L = []
+    t = n ** 2
+    i = 0
+    j = 0
+    while len(L) < t:
+        T1 = tuple([i, j])
+        T2 = tuple([i, j+1])
+        T3 = tuple([i+1, j])
+        T4 = tuple([i+1, j+1])
+        L.append(T1)
+        L.append(T2)
+        L.append(T3)
+        L.append(T4)
+        j = j + 2
+        if j == n:
+            j = 0
+            i = i + 2
+    return L
+
+
+def getListWord(alphabet, n):
+    L = [''.join(x) for x in itertools.product(alphabet, repeat=int(log2(n)))]
+    return L
 
 
 def diffABS(L1, L2, n):
