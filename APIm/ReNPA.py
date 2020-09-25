@@ -5,11 +5,11 @@
 from skimage.io import imread
 from skimage.io import show
 from skimage.io import imsave
+from skimage.io import imshow
 from Auxiliars import createAutomataAndXi as cax
 from Auxiliars import getListWord as words
 from Auxiliars import getEnumPixel as pixels
 from THEFE import THFE
-from math import log2
 
 import numpy as np
 import sys
