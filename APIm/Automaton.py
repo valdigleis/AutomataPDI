@@ -34,12 +34,14 @@ class Automaton(object):
         return s
 
     def __getAllPrefixes(self, word):
-        prefixes = list()
-        prefixes.append(word)
-        n = 1
-        while n < len(word):
-            prefixes.append(word[:-n])
-        return prefixes
+        n = len(word)
+        ctl = 0
+        L = []
+        while ctl < n + 1:
+            L.append(word[:ctl])
+            ctl = ctl + 1
+        del L[0]
+        return L
 
     def prefixesComputationWithMaxCom(self, word):
         words = self.__getAllPrefixes(word)
@@ -56,56 +58,6 @@ class Automaton(object):
             s = self.compute(word)
             result = result * self.__F[s]
         return result
-
-    def __getFather(self, q):
-        for K, V in self.__delta.items():
-            if V == q:
-                return K
-        return None
-    
-    def __getBlues(self, reds):
-        blues = set()
-        for red in reds:
-            for a in self.__alphabelt:
-                L = red + ',' + a
-                if L in self.__delta:
-                    if self.__delta[L] not in reds:
-                        blues.add(self.__delta[L])
-        return blues
-
-    
-    def __distance(self, s, q, dist):
-        if dist == 'Jaccard':
-            return self.__F[s] ** self.__F[q]
-        elif dist == 'std':
-            return self.__F[s] // self.__F[q]
-        else:
-            return self.__F[s] ** self.__F[q]
-
-    def __getAllAcessibles(self):
-        Accs = set([self.__s0])
-        sUse = set([self.__s0])
-        while len(sUse) > 0:
-            nextS = self.__getBlues(sUse)
-            Accs = Accs.union(nextS)
-            sUse = nextS
-        return Accs
-
-    def __otimize(self):
-        temp = self.__states - self.__getAllAcessibles()
-        self.__states = self.__states - temp
-        for s in temp:
-            del self.__F[s]
-        toErase = set()
-        for L, r in self.__delta.items():
-            s = L.split(',')
-            if s[0] in temp or r in temp:
-                toErase.add(L)
-        for L in toErase:
-            if L in self.__delta:
-                del self.__delta[L]
-        temp = None
-        toErase = None
     
 
     # --------------------------------------------------
@@ -122,6 +74,6 @@ class Automaton(object):
             D = D + ('d(' + L + ')=' + V) + '\n'
         F = ''
         for L, V in self.__F.items():
-            F = F + ('d(' + L + ')=' + str(V)) + '\n'
+            F = F + ('F(' + L + ')=' + str(V)) + '\n'
         return S + A + D + F
         
