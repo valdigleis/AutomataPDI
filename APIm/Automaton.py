@@ -15,15 +15,24 @@ class Automaton(object):
         self.__s0 = s0
         self.__F = F
 
+    # --------------------------------------------------
+    # Métodos de computação
+    # --------------------------------------------------
+
+    def computeValuationByMax(self, words):
+        X = ZERO
+        for word in words:
+            X = X + self.computeValuation(word)
+        return X
+    
+    def computeValuationByMin(self, words):
+        X = ONE
+        for word in words:
+            X = X * self.computeValuation(word)
+        return X
+
     def computeValuation(self, word):
-        s = self.__s0
-        for c in word:
-            L = s + ',' + c
-            if L in self.__delta:
-                s = self.__delta[L]
-            else:
-                return ZERO
-        return self.__F[s]
+        return self.__F[self.compute(word)]
 
     def compute(self, word):
         s = self.__s0
@@ -33,35 +42,15 @@ class Automaton(object):
                 s = self.__delta[L]
         return s
 
-    def __getAllPrefixes(self, word):
-        n = len(word)
-        ctl = 0
-        L = []
-        while ctl < n + 1:
-            L.append(word[:ctl])
-            ctl = ctl + 1
-        del L[0]
-        return L
-
-    def prefixesComputationWithMaxCom(self, word):
-        words = self.__getAllPrefixes(word)
-        result = ZERO
-        for word in words:
-            s = self.compute(word)
-            result = result + self.__F[s]
-        return result
-
-    def prefixesComputationWithMinCom(self, word):
-        words = self.__getAllPrefixes(word)
-        result = ONE
-        for word in words:
-            s = self.compute(word)
-            result = result * self.__F[s]
-        return result
     
-
     # --------------------------------------------------
+    # Return infos
     # --------------------------------------------------
+    def getF(self):
+        F = ''
+        for L, V in self.__F.items():
+            F = F + ('F(' + L + ')=' + str(V)) + '\n'
+        return F
             
     def __len__(self):
         return len(self.__states)

@@ -41,20 +41,14 @@ class THFE(object):
     def notIsValid(self):
         return self.__degrees == None
 
-    def getAggregation(self):
-        S = 0.0
-        for x in self.__degrees:
-            S = S + x
-        return S/len(self.__degrees) 
-
     def getDegrees(self):
         return self.__degrees
 
-    def getSum(self):
+    def getMean(self):
         S = 0.0
         for x in self.__degrees:
             S = S + x
-        return S
+        return S/len(self.__degrees)
     
     def __getListDegrees(self):
         """Metodo que retorna o conjunto de valores de pertinencia do elemento fuzzy hesistante tipico."""
@@ -100,13 +94,12 @@ class THFE(object):
 
     def __floordiv__(self, other):
         """Metodo que implementa o calculo de distancia padrao entre conjuntos."""
-        m = 0.0
-        for x in self.__degrees:
-            for y in other.getDegrees():
-                z = abs(x -  y)
-                if z > m:
-                    m = z
-        return m    
+        m1 = min(self.__degrees)
+        m2 = max(self.__degrees)
+        n1 = min(other.getDegrees())
+        n2 = max(other.getDegrees())
+        L = [abs(m1 - n1), abs(m1 - n2), abs(m2 - n1), abs(m2 - n2)]
+        return max(L)
 
     def __truediv__(self, other):
         '''Metodo que implementa a distancia média'''

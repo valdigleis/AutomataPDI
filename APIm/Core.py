@@ -99,3 +99,18 @@ def getListWords(n):
     for x in N:
         L.append(int(x))
     return L
+
+def getAllPrefixes(word):
+    n = len(word)
+    ctl = 0
+    L = []
+    while ctl < n + 1:
+        L.append(word[:ctl])
+        ctl = ctl + 1
+    del L[0]
+    return L
+
+def getPrefixes(word, n):
+    P = getAllPrefixes(word)
+    prefixes = P[len(word)-n: len(word)]
+    return prefixes
